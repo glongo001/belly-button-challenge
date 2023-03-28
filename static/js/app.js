@@ -13,25 +13,40 @@ d3.selectAll("#selDataset").on("change", init);
 function init() {
     //select dropdown menu with d3
     let dropdownMenu = d3.select('#selDataset');
-    // Fetch the JSON data and use d3 to get patient names
+    //fetch the data and use d3 to get patient names
     d3.json(dataset).then((data) => {
         //create variable for patient names
         let samples = data.names;
         //add each name to the dropdown menu
         samples.forEach((id) => {
             //log each id for all iterations of the loop
-            console.log(id);
+            //console.log(id);
             dropdownMenu.append('option').text(id).property('value', id);
         });
         //variable containing value of first sample
         let firstsample = samples[0];
         //build initial charts and metadata
-        buildBarChart(firstsample, data);
-        buildBubbleChart(firstsample, data);
-        buildMetadata(firstsample, data);
-        buildGaugeChart(firstsample, data);
+        buildBarChart(firstsample);
+        buildBubbleChart(firstsample);
+        buildMetadata(firstsample);
+        buildGaugeChart(firstsample);
     });
 }
+
+//initialize dashboard
+init();
+
+//when new option is chosen
+function newchoice(newsample) {
+    //fetch new data when a new sample is chosen
+    buildBarChart(newsample);
+    buildBubbleChart(newsample);
+    buildMetadata(newsample);
+    buildGaugeChart(newsample);
+}
+
+//so 1 doesn't have consol.log(id) inside samples.foreach((id)), 
+//it initializes init() and has optionchanged
 
 //2. create horizontal barchart with dropdown displaying top 10 OTUs in individual
 function buildBarChart(sample, data) {
@@ -96,7 +111,7 @@ function buildBubbleChart(sample, data) {
 }
 
 //4. display sample metadata (demographic info of individual)
-function buildMetadata(sample, data) {
+function buildMetadata(sample) {
     //get data for individual sample
     let individualData = data.samples.find(element => element.id == sample);
     //select the panel element

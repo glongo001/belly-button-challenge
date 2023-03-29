@@ -27,6 +27,8 @@ I built an interactive dashboard that explores a Belly Button Biodiversity Datas
 
 6. I created a function that updated all plots when a new sample is selected on the dropdown menu.
 
+Source: Used https://plotly.com/javascript/, https://d3js.org/, previous class assignments and Stack Overflow for reference.
+
 7. I created a gauge chart that showed the washing frequency (scrubs per week) for each patient. I used Plotly to create the chart.
 
 ![alt text](https://github.com/glongo001/belly-button-challenge/blob/main/Images/gaugechart.png)

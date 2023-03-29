@@ -35,3 +35,5 @@ Source: Used https://plotly.com/javascript/, https://d3js.org/, previous class a
 
 8. I deployed the app to Github Pages:
     - https://glongo001.github.io/belly-button-challenge/
+
+Source: Used https://plotly.com/javascript/, https://d3js.org/, previous class assignments and Stack Overflow for reference.

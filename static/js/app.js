@@ -120,9 +120,6 @@ function buildMetadata(sample, data) {
         row.append("td").text(key);
         row.append("td").text(value);
     });
-    // extract washing frequency data and pass to buildGaugeChart function
-    let wfreq = data.metadata.find(element => element.id == sample).wfreq;
-    buildGaugeChart(wfreq);
 };
 
 //6. update all plots when new sample is selected. create any layout you want
@@ -139,27 +136,52 @@ function optionchanged() {
         buildBubbleChart(selectedSample, data);
         // update the metadata
         buildMetadata(selectedSample, data);
-        // update the gauge chart
-        buildGaugeChart(selectedSample, data);
+        // extract washing frequency data and pass to buildGaugeChart function
+        let wfreq = data.metadata.find(element => element.id == selectedSample).wfreq;
+        buildGaugeChart(wfreq);
     });
 };
 
+
 //BONUS: adapt Gauge Chart from  https://plot.ly/javascript/gauge-charts/ to plot weekly washing frequency of individual
-function buildGaugeChart(sample) {
-    // Filter the data for the selected sample
-    let metadata = data.metadata.filter(obj => obj.id == sample)[0];
-    let washFreq = metadata.wfreq;
-    // Create the gauge chart
+function buildGaugeChart(value) {
+    //show data for selected sample and create gauge chart
     let data = [
-        {
-            domain: { x: [0, 1], y: [0, 1] },
-            value: washFreq,
-            title: { text: "Belly Button Washing Frequency<br><sub>Scrubs per Week</sub>" },
-            type: "indicator",
-            mode: "gauge+number"
-        }];
+      {
+        domain: { x: [0, 1], y: [0, 1] },
+        value: value,
+        title: { text: "Belly Button Washing Frequency<br><sub>Scrubs per Week</sub>" },
+        type: "indicator",
+        mode: "gauge+number",
+        gauge: {
+          axis: { range: [null, 9] },
+          'bar': {'color': "rgb(200,200,200)"},
+                'bgcolor': "white",
+                'borderwidth': 2,
+                'bordercolor': "gray",
+          steps: [
+            {'range': [0, 1], 'color': 'rgb(230, 240, 215)'},
+            {'range': [1, 2], 'color': 'rgb(200, 230, 180)'},
+            {'range': [2, 3], 'color': 'rgb(170, 220, 140)'},
+            {'range': [3, 4], 'color': 'rgb(110, 190, 85)'},
+            {'range': [4, 5], 'color': 'rgb(60, 165, 35)'},
+            {'range': [5, 6], 'color': 'rgb(41, 150, 44)'},
+            {'range': [6, 7], 'color': 'rgb(14, 135, 17)'},
+            {'range': [7, 8], 'color': 'rgb(10, 120, 10)'},
+            {'range': [8, 9], 'color': 'rgb(0, 105, 0)'},
+          ],
+          threshold: {
+            line: { color: "red", width: 4 },
+            thickness: 0.75,
+            value: value
+          }
+        }
+      }
+    ];
+    
     // Set the layout for the gauge chart
-    let layout = {title: "Wash Frequency", width: 400, height: 300, margin: { t: 0, b: 0 } };
+    let layout = { width: 600, height: 450, margin: { t: 0, b: 0 } };
     // Use Plotly to plot the gauge chart on the "gauge-chart" div
     Plotly.newPlot("gauge", data, layout);
-};
+  }
+  

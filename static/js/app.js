@@ -1,52 +1,40 @@
 //first save the data from url as constant
-const dataset = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
+const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
 
 //1. use d3 to load dataset
-d3.json(dataset).then(function(data) {
+d3.json(url).then(function(data) {
     console.log(data);
+}, function(error) {
+    console.log(error);
 });
 
-//call init()
-d3.selectAll("#selDataset").on("change", init);
-
 //create dropdown menu to pick sample
-function init() {
+function init(data) {
     //select dropdown menu with d3
     let dropdownMenu = d3.select('#selDataset');
-    //fetch the data and use d3 to get patient names
-    d3.json(dataset).then((data) => {
-        //create variable for patient names
-        let samples = data.names;
-        //add each name to the dropdown menu
-        samples.forEach((id) => {
-            //log each id for all iterations of the loop
-            //console.log(id);
-            dropdownMenu.append('option').text(id).property('value', id);
-        });
-        //variable containing value of first sample
-        let firstsample = samples[0];
-        //build initial charts and metadata
-        buildBarChart(firstsample);
-        buildBubbleChart(firstsample);
-        buildMetadata(firstsample);
-        buildGaugeChart(firstsample);
+    //create variable for patient names
+    let samples = data.names;
+    //add each name to the dropdown menu
+    samples.forEach((id) => {
+        //log each id for all iterations of the loop
+        console.log(id);
+        dropdownMenu.append('option').text(id).property('value', id);
     });
+    //variable containing value of first sample
+    let firstsample = samples[0];
+    //log value of first sample
+    console.log(firstsample, data);
+    //build initial charts and metadata
+    buildBarChart(firstsample, data);
+    buildBubbleChart(firstsample, data);
+    buildMetadata(firstsample, data);
+    buildGaugeChart(firstsample, data);
 }
 
-//initialize dashboard
-init();
-
-//when new option is chosen
-function newchoice(newsample) {
-    //fetch new data when a new sample is chosen
-    buildBarChart(newsample);
-    buildBubbleChart(newsample);
-    buildMetadata(newsample);
-    buildGaugeChart(newsample);
-}
-
-//so 1 doesn't have consol.log(id) inside samples.foreach((id)), 
-//it initializes init() and has optionchanged
+//call init function to initialize the dropdown menu and the charts
+d3.json(url).then(init, function(error) {
+    console.log(error);
+});
 
 //2. create horizontal barchart with dropdown displaying top 10 OTUs in individual
 function buildBarChart(sample, data) {
@@ -77,7 +65,7 @@ function buildBarChart(sample, data) {
     };
 
     Plotly.newPlot("bar", bar_data, layout);
-}
+};
 
 //3. create bubble chart displaying each sample
 function buildBubbleChart(sample, data) {
@@ -108,12 +96,12 @@ function buildBubbleChart(sample, data) {
     };
 
     Plotly.newPlot("bubble", bubble_data, layout);
-}
+};
 
 //4. display sample metadata (demographic info of individual)
-function buildMetadata(sample) {
+function buildMetadata(sample, data) {
     //get data for individual sample
-    let individualData = data.samples.find(element => element.id == sample);
+    let individualData = data.metadata.find(element => element.id == sample);
     //select the panel element
     let panel = d3.select("#sample-metadata");
     //clear any existing metadata
@@ -127,18 +115,18 @@ function buildMetadata(sample) {
         row.append("td").text(value);
     });
     // extract washing frequency data and pass to buildGaugeChart function
-    let wfreq = individualData.wfreq;
+    let wfreq = data.metadata.find(element => element.id == sample).wfreq;
     buildGaugeChart(wfreq);
-}
+};
 
 //6. update all plots when new sample is selected. create any layout you want
-function updatePlots() {
+function optionchanged() {
     // select dropdown menu with d3
     let dropdownMenu = d3.select('#selDataset');
     // get the ID of the selected sample
     let selectedSample = dropdownMenu.property('value');
     // Fetch the JSON data and use d3 to get patient names
-    d3.json(dataset).then((data) => {
+    d3.json(url).then((data) => {
         // update the bar chart
         buildBarChart(selectedSample, data);
         // update the bubble chart
@@ -146,10 +134,10 @@ function updatePlots() {
         // update the metadata
         buildMetadata(selectedSample, data);
     });
-}
+};
 
 //BONUS: adapt Gauge Chart from  https://plot.ly/javascript/gauge-charts/ to plot weekly washing frequency of individual
-function buildGaugeChart(sample, data) {
+function buildGaugeChart(sample) {
     // Filter the data for the selected sample
     var metadata = data.metadata.filter(obj => obj.id == sample)[0];
     var washFreq = metadata.wfreq;
@@ -184,7 +172,7 @@ function buildGaugeChart(sample, data) {
     var layout = { width: 400, height: 300, margin: { t: 0, b: 0 } };
     // Use Plotly to plot the gauge chart on the "gauge-chart" div
     Plotly.newPlot("gauge-chart", data, layout);
-}
+};
   
 //update with each sample that is selected
 function updateGaugeChart(value) {
@@ -197,4 +185,5 @@ function updateGaugeChart(value) {
             easing: "cubic-in-out"
         }
     });
-}
+};
+

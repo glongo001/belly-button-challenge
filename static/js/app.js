@@ -171,7 +171,7 @@ function buildGaugeChart(sample) {
     // Set the layout for the gauge chart
     var layout = { width: 400, height: 300, margin: { t: 0, b: 0 } };
     // Use Plotly to plot the gauge chart on the "gauge-chart" div
-    Plotly.newPlot("gauge-chart", data, layout);
+    Plotly.newPlot("gauge", data, layout);
 };
   
 //update with each sample that is selected

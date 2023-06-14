@@ -1,4 +1,4 @@
-# Unit 14 Homework: Belly Button Challenge
+# Belly Button Challenge
 I built an interactive dashboard that explores a Belly Button Biodiversity Dataset. The dataset contains a list of patients with the microbes that colonize each patient's navel. The microbial species are referred to as operational taxonomic units (OTUs). It was found that a handful of OTUs were present in more than 70% of patients.
 
 ## Charts and Metadata

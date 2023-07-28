@@ -7,11 +7,11 @@ I built an interactive dashboard that explores a Belly Button Biodiversity Datas
 2. I created a function that used D3 to create a dropdown menu. 
     - I added all patient ids to the dropdown menu and added an event listener to allow the selection of new samples.
     
-![alt text](https://github.com/glongo001/belly-button-challenge/blob/main/Images/dropdown.png)
+    ![alt text](https://github.com/glongo001/belly-button-challenge/blob/main/Images/dropdown.png)
 
     - I built the initial charts and metadata with the first sample in the dataset.
     
-![alt text](https://github.com/glongo001/belly-button-challenge/blob/main/Images/initialpage.png)
+    ![alt text](https://github.com/glongo001/belly-button-challenge/blob/main/Images/initialpage.png)
 
 3. I created a horizontal bar chart that displayed the top 10 OTUs in each patient. I sorted the OTUs in descending order and sliced the first 10 OTUs to get the top 10. I displayed the OTU ids on the y axis, the OTU sample count on the x axis, and used the OTU labels (type of microbe) to display as hovertext. Used Plotly to create the chart.
 
@@ -26,8 +26,6 @@ I built an interactive dashboard that explores a Belly Button Biodiversity Datas
 ![alt text](https://github.com/glongo001/belly-button-challenge/blob/main/Images/metadata.png)
 
 6. I created a function that updated all plots when a new sample is selected on the dropdown menu.
-
-Source: Used https://plotly.com/javascript/, https://d3js.org/, previous class assignments and Stack Overflow for reference.
 
 7. I created a gauge chart that showed the washing frequency (scrubs per week) for each patient. I used Plotly to create the chart.
 
